@@ -1,5 +1,5 @@
 import { IsEmail, IsEnum, IsInt, IsMobilePhone, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { DeptStatusEnum } from '@/common/enums';
+import { StatusEnum } from '@/common/enums';
 
 export class CreateDeptDto {
   @IsNotEmpty()
@@ -8,7 +8,7 @@ export class CreateDeptDto {
   @IsNotEmpty()
   @IsInt()
   orderNum: number;
-  @IsEnum(DeptStatusEnum)
+  @IsEnum(StatusEnum)
   status: string;
   @IsString()
   @IsOptional()

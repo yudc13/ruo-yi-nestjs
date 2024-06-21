@@ -13,6 +13,29 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// 用户
+model User {
+  id           Int         @id @default(autoincrement())
+  userName     String      @map("username") @db.VarChar(50)
+  /// 登陆账号
+  account      String      @unique @db.VarChar(20)
+  password     String      @db.Char(64)
+  /// 性别 0: 未知 1: 男  2: 女
+  gender       String
+  phone        String      @db.Char(11)
+  email        String      @db.VarChar(50)
+  /// 用户状态 0: 停用 1: 正常
+  status       String      @default("1")
+  /// 是否删除 0: 未删除 1: 已删除
+  isDeleted    String      @default("0") @map("is_deleted")
+  createAt     DateTime    @default(now()) @map("create_at")
+  updatedAt    DateTime    @updatedAt @map("created_at")
+  departmentId Int?        @map("department_id")
+  department   Department? @relation(fields: [departmentId], references: [id])
+
+  @@map("user")
+}
+
 /// 部门
 model Department {
   id             Int          @id @default(autoincrement())
@@ -30,6 +53,7 @@ model Department {
   parentId       Int?         @map("parent_id")
   parent         Department?  @relation("dept_parent_fkey", fields: [parentId], references: [id])
   children       Department[] @relation("dept_parent_fkey")
+  users          User[]
 
   @@unique([id, parentId])
   @@map("department")
