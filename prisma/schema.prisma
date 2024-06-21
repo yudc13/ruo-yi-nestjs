@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+/// 部门
+model Department {
+  id             Int          @id @default(autoincrement())
+  departmentName String       @map("department_name") @db.VarChar(20)
+  orderNum       Int          @map("order_num")
+  /// 部门状态 0: 停用 1: 正常
+  status         String       @default("1")
+  /// 是否删除 0: 未删除 1: 已删除
+  isDeleted      String       @default("0") @map("is_deleted")
+  createAt       DateTime     @default(now()) @map("create_at")
+  updatedAt      DateTime     @updatedAt @map("created_at")
+  leader         String?      @db.VarChar(20)
+  email          String?      @db.VarChar(50)
+  phone          String?      @db.Char(11)
+  parentId       Int?         @map("parent_id")
+  parent         Department?  @relation("dept_parent_fkey", fields: [parentId], references: [id])
+  children       Department[] @relation("dept_parent_fkey")
+
+  @@unique([id, parentId])
+  @@map("department")
+}
