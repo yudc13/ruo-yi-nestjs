@@ -58,3 +58,28 @@ model Department {
   @@unique([id, parentId])
   @@map("department")
 }
+
+/// 菜单
+model Menu {
+  id        Int      @id @default(autoincrement())
+  /// 菜单类型 1: 目录 2: 菜单 3: 按钮
+  menuType  String   @default("1") @map("menu_type") @db.Char(1)
+  menuName  String   @map("menu_name") @db.VarChar(20)
+  menuUrl   String?  @map("menu_url") @db.VarChar(50)
+  menuIcon  String?  @map("menu_icon") @db.VarChar(50)
+  /// 权限标识
+  permsCode String   @map("perms_code") @db.VarChar(30)
+  orderNum  Int?     @map("order_num")
+  /// 菜单状态 0: 隐藏 1: 显示
+  status    String   @default("1")
+  /// 是否删除 0: 未删除 1: 已删除
+  isDeleted String   @default("0") @map("is_deleted")
+  createAt  DateTime @default(now()) @map("create_at")
+  updatedAt DateTime @updatedAt @map("created_at")
+  parentId  Int?     @map("parent_id")
+  parent    Menu?    @relation("menu_parent_fkey", fields: [parentId], references: [id])
+  children  Menu[]   @relation("menu_parent_fkey")
+
+  @@unique([id, parentId])
+  @@map("menu")
+}

@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { PrismaConfigService } from './prisma/prisma-config.service';
 import { DepartmentModule } from './department/department.module';
 import { UserModule } from './user/user.module';
+import { MenuService } from './menu/menu.service';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
   imports: [
@@ -16,6 +18,7 @@ import { UserModule } from './user/user.module';
     PrismaModule,
     DepartmentModule,
     UserModule,
+    MenuModule,
   ],
   controllers: [AppController],
   providers: [
@@ -25,6 +28,7 @@ import { UserModule } from './user/user.module';
       provide: APP_INTERCEPTOR,
       useClass: ClassSerializerInterceptor,
     },
+    MenuService,
   ],
 })
 export class AppModule {}

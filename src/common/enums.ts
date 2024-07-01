@@ -13,3 +13,9 @@ export enum GenderEnum {
   Female = '2',
   Unknown = '0',
 }
+
+export enum MenuTypeEnum {
+  Dir = '1',
+  MENU = '2',
+  BUTTON = '3',
+}
